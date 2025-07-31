@@ -1,0 +1,16 @@
+# Environment files
+.env
+.env.local
+
+# Data directories
+data/
+repos/
+config/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
