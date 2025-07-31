@@ -34,13 +34,20 @@ NAS 터미널에서 다음 명령어 실행:
 
 ```bash
 cd /workspace/docker/vibe-kanban
-docker-compose up -d
+
+# 방법 1: GitHub에서 소스 빌드 (권장)
+docker-compose -f docker-compose.yml up -d vibe-kanban-build
+
+# 방법 2: 대체 이미지 사용 (docker-compose-alternative.yml 참고)
+# docker-compose -f docker-compose-alternative.yml up -d
 ```
+
+**참고**: 현재 ghcr.io의 사전 빌드 이미지가 접근 불가능하여 소스에서 빌드하는 방식을 사용합니다.
 
 ### 4. 접속 확인
 
 웹 브라우저에서 접속:
-- URL: http://[NAS_IP]:3000
+- URL: http://[NAS_IP]:8100
 
 ## 디렉토리 구조
 
@@ -49,9 +56,11 @@ vibe-kanban/
 ├── docker-compose.yml    # Docker Compose 설정
 ├── .env                 # 환경 변수 (생성 필요)
 ├── .env.example         # 환경 변수 예제
-├── data/               # 데이터베이스 저장 (자동 생성)
-├── repos/              # Git 저장소 (자동 생성)
-└── config/             # 설정 파일 (자동 생성)
+├── .gitignore          # Git 무시 파일
+├── data/               # 데이터베이스 저장
+├── repos/              # Git 저장소
+├── config/             # 설정 파일
+└── README.md           # 이 문서
 ```
 
 ## 환경 변수 설정
