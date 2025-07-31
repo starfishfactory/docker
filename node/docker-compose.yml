@@ -1,0 +1,12 @@
+version: "3"
+services:
+  node-app:
+    build: .
+    container_name: my-node
+    command: bash
+    stdin_open: true
+    tty: true
+    environment:
+      - GEMINI_API_KEY=***REMOVED***
+    volumes:
+      - /var/services/homes/yoojinhyung/workspace:/workspace

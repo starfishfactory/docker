@@ -1,0 +1,29 @@
+# 데이터베이스 및 영구 데이터
+**/postgres-data/
+**/data/
+**/repos/
+**/config/
+
+# 환경 설정 파일
+.env
+.env.local
+**/.env
+**/.env.local
+
+# 로그 파일
+*.log
+**/*.log
+
+# 임시 파일
+*.tmp
+*.temp
+.DS_Store
+**/.DS_Store
+
+# Node.js
+node_modules/
+**/node_modules/
+
+# Docker 빌드 캐시
+**/build/
+**/.build/
