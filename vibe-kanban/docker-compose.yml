@@ -1,50 +1,51 @@
 version: '3.8'
 
 services:
-  vibe-kanban:
-    image: ghcr.io/bloopai/vibe-kanban:latest
-    container_name: vibe-kanban
-    ports:
-      - "8100:3000"
-    environment:
-      - HOST=0.0.0.0
-      - PORT=3000
-      - BACKEND_PORT=3001
-      - FRONTEND_PORT=3000
-      # GitHub OAuth settings (optional)
-      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID:-}
-      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET:-}
-      # PostHog analytics (optional)
-      - POSTHOG_API_KEY=${POSTHOG_API_KEY:-}
-      - POSTHOG_HOST=${POSTHOG_HOST:-https://app.posthog.com}
-      # Database path
-      - DATABASE_URL=sqlite:///app/data/vibe-kanban.db
-    volumes:
-      - ./data:/app/data
-      - ./repos:/repos
-      - ./config:/app/config
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/api/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-
-  # Alternative: Build from source
-  # vibe-kanban-build:
-  #   build:
-  #     context: https://github.com/BloopAI/vibe-kanban.git
-  #     dockerfile: Dockerfile
+  # Using pre-built image (currently not accessible)
+  # vibe-kanban:
+  #   image: ghcr.io/bloopai/vibe-kanban:latest
   #   container_name: vibe-kanban
   #   ports:
-  #     - "3000:3000"
+  #     - "8100:3000"
   #   environment:
   #     - HOST=0.0.0.0
   #     - PORT=3000
+  #     - BACKEND_PORT=3001
+  #     - FRONTEND_PORT=3000
+  #     # GitHub OAuth settings (optional)
+  #     - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID:-}
+  #     - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET:-}
+  #     # PostHog analytics (optional)
+  #     - POSTHOG_API_KEY=${POSTHOG_API_KEY:-}
+  #     - POSTHOG_HOST=${POSTHOG_HOST:-https://app.posthog.com}
+  #     # Database path
   #     - DATABASE_URL=sqlite:///app/data/vibe-kanban.db
   #   volumes:
   #     - ./data:/app/data
   #     - ./repos:/repos
   #     - ./config:/app/config
   #   restart: unless-stopped
+  #   healthcheck:
+  #     test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/api/health"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 40s
+
+  # Alternative: Build from source
+  vibe-kanban-build:
+    build:
+      context: https://github.com/BloopAI/vibe-kanban.git
+      dockerfile: Dockerfile
+    container_name: vibe-kanban
+    ports:
+      - "8100:3000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3000
+      - DATABASE_URL=sqlite:///app/data/vibe-kanban.db
+    volumes:
+      - ./data:/app/data
+      - ./repos:/repos
+      - ./config:/app/config
+    restart: unless-stopped
