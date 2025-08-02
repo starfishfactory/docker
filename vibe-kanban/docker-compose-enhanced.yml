@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # Enhanced vibe-kanban with additional tools
+  vibe-kanban-enhanced:
+    image: vibe-kanban-enhanced:latest
+    container_name: vibe-kanban
+    ports:
+      - "8100:3000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3000
+      - BACKEND_PORT=3001
+      - FRONTEND_PORT=3000
+      # GitHub OAuth settings (optional)
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID:-}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET:-}
+      # PostHog analytics (optional)
+      - POSTHOG_API_KEY=${POSTHOG_API_KEY:-}
+      - POSTHOG_HOST=${POSTHOG_HOST:-https://app.posthog.com}
+      # Database path
+      - DATABASE_URL=sqlite:///app/data/vibe-kanban.db
+    volumes:
+      - ./data:/app/data
+      - /var/services/homes/yoojinhyung/workspace:/repos
+      - ./config:/app/config
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
