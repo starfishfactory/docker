@@ -44,7 +44,3 @@ services:
       postgres:
         condition: service_healthy
     command: n8n start
-
-volumes:
-  postgres-data:
-  n8n-data:

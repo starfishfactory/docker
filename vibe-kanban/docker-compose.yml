@@ -46,6 +46,6 @@ services:
       - DATABASE_URL=sqlite:///app/data/vibe-kanban.db
     volumes:
       - ./data:/app/data
-      - ./repos:/repos
+      - /var/services/homes/yoojinhyung/workspace:/repos
       - ./config:/app/config
     restart: unless-stopped
