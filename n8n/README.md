@@ -34,8 +34,12 @@ n8n/
 ├── docker-compose.yml    # Docker Compose 설정
 ├── .env                  # 환경변수 (git에 포함되지 않음)
 ├── .env.example          # 환경변수 예시
+├── .gitignore           # Git 무시 파일
 ├── data/                 # n8n 데이터 (워크플로우, 설정 등)
-└── postgres-data/        # PostgreSQL 데이터베이스
+├── postgres-data/        # PostgreSQL 데이터베이스
+├── quick-start.sh       # 빠른 시작 스크립트
+├── setup.sh             # 초기 설정 스크립트
+└── README.md            # 이 문서
 ```
 
 ## 유용한 명령어
