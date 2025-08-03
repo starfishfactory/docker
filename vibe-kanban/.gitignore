@@ -14,3 +14,4 @@ config/
 *.tmp
 *.temp
 .DS_Store
+*.tar.gz
