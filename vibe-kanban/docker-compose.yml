@@ -41,11 +41,14 @@ services:
     ports:
       - "8100:3000"
     environment:
-      - HOST=0.0.0.0
-      - PORT=3000
+      - HOST=${HOST:-0.0.0.0}
+      - PORT=${PORT:-3000}
       - DATABASE_URL=sqlite:///app/data/vibe-kanban.db
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID:-}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET:-}
     volumes:
       - ./data:/app/data
       - /var/services/homes/yoojinhyung/workspace:/repos
       - ./config:/app/config
+    command: sh -c "apt-get update && apt-get install -y git && npm start"
     restart: unless-stopped
