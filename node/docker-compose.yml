@@ -7,6 +7,6 @@ services:
     stdin_open: true
     tty: true
     environment:
-      - GEMINI_API_KEY=
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
     volumes:
       - /var/services/homes/yoojinhyung/workspace:/workspace
