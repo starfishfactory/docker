@@ -7,7 +7,8 @@ RUN apt-get update && \
     build-essential \
     pkg-config \
     libssl-dev \
-    git && \
+    git \
+    zip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
