@@ -16,8 +16,9 @@ RUN cargo install cargo-watch sqlx-cli
 # Install Node dependencies
 RUN pnpm install
 
-# Build the application
-RUN ./build-npm-package.sh
+# Make build script executable and build the application
+RUN chmod +x ./build-npm-package.sh && \
+    ./build-npm-package.sh
 
 # Final stage
 FROM --platform=$TARGETPLATFORM node:18-slim
