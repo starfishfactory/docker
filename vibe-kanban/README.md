@@ -1,211 +1,115 @@
-# Vibe Kanban Enhanced Docker 가이드
+> [!IMPORTANT]  
+> We're re-writing the codebase, expect a delayed response to feedback until that's shipped. The current version on NPM is stable and we expect to be releasing alpha builds of V2 within days.
+> You can track progress [here](https://github.com/BloopAI/vibe-kanban/tree/deployments).
 
-Vibe Kanban은 AI 코딩 에이전트(Claude Code, Gemini CLI, Amp 등)를 통합 관리하는 칸반 보드 시스템입니다.
+<p align="center">
+  <a href="https://vibekanban.com">
+    <picture>
+      <source srcset="frontend/public/vibe-kanban-logo-dark.svg" media="(prefers-color-scheme: dark)">
+      <source srcset="frontend/public/vibe-kanban-logo.svg" media="(prefers-color-scheme: light)">
+      <img src="frontend/public/vibe-kanban-logo.svg" alt="Vibe Kanban Logo">
+    </picture>
+  </a>
+</p>
 
-이 Enhanced 버전은 추가적인 개발 도구들이 포함되어 있습니다:
-- GitHub CLI (gh)
-- Screen 유틸리티
-- 향상된 Git 지원
-- 기타 유용한 명령줄 도구들
+<p align="center">Get 10X more out of Claude Code, Gemini CLI, Codex, Amp and other coding agents...</p>
+<p align="center">
+  <a href="https://www.npmjs.com/package/vibe-kanban"><img alt="npm" src="https://img.shields.io/npm/v/vibe-kanban?style=flat-square" /></a>
+  <a href="https://github.com/BloopAI/vibe-kanban/blob/main/.github/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/bloopai/vibe-kanban/.github%2Fworkflows%2Fpublish.yml?style=flat-square&branch=dev" /></a>
+</p>
 
-## 특징
+![](frontend/public/vibe-kanban-screenshot-overview.png)
 
-- 여러 AI 코딩 에이전트를 한 곳에서 관리
-- 실시간 작업 상태 추적
-- GitHub 통합 지원
-- Git worktree를 통한 동시 개발 지원
-- 웹 기반 인터페이스
-- **추가된 개발 도구들로 향상된 개발 환경**
+## Overview
 
-## 설치 방법
+AI coding agents are increasingly writing the world's code and human engineers now spend the majority of their time planning, reviewing, and orchestrating tasks. Vibe Kanban streamlines this process, enabling you to:
 
-### 1. 필수 요구사항
+- Easily switch between different coding agents
+- Orchestrate the execution of multiple coding agents in parallel or in sequence
+- Quickly review work and start dev servers
+- Track the status of tasks that your coding agents are working on
+- Centralise configuration of coding agent MCP configs
 
-- Docker 및 Docker Compose 설치
-- NAS 또는 서버 터미널 접근 권한
+You can watch a video overview [here](https://youtu.be/TFT3KnZOOAk).
 
-### 2. 이미지 빌드 방법
+## Installation
 
-#### 방법 A: 로컬 빌드 (권장)
-```bash
-# 저장소 클론
-git clone https://github.com/starfishfactory/docker.git
-cd docker/vibe-kanban
-
-# Enhanced 이미지 빌드
-./build-and-transfer.sh
-```
-
-#### 방법 B: GitHub Actions 자동 빌드
-이 저장소는 GitHub Actions를 통한 자동 빌드를 지원합니다:
-- `vibe-kanban/` 폴더 변경 시 자동으로 이미지 빌드
-- 빌드된 이미지는 GitHub Container Registry와 Artifacts에서 다운로드 가능
-
-#### 방법 C: 사전 빌드된 이미지 사용
-```bash
-# GitHub Container Registry에서 pull
-docker pull ghcr.io/starfishfactory/vibe-kanban-enhanced:latest
-
-# 또는 GitHub Actions Artifacts에서 다운로드 후
-docker load < vibe-kanban-enhanced.tar.gz
-```
-
-### 3. 환경 설정
+Make sure you have authenticated with your favourite coding agent. A full list of supported coding agents can be found in the [docs](https://vibekanban.com/). Then in your terminal run:
 
 ```bash
-# .env.example을 복사하여 .env 파일 생성
-cp .env.example .env
-
-# 필요한 경우 .env 파일 편집
-# GitHub OAuth 설정 (선택사항)
-# GITHUB_CLIENT_ID와 GITHUB_CLIENT_SECRET 입력
+npx vibe-kanban
 ```
 
-### 4. 컨테이너 실행
+## Documentation
+
+Please head to the [website](https://vibekanban.com) for the latest documentation and user guides.
+
+## Support
+
+Please open an issue on this repo if you find any bugs or have any feature requests.
+
+## Contributing
+
+We would prefer that ideas and changes are raised with the core team via GitHub issues, where we can discuss implementation details and alignment with the existing roadmap. Please do not open PRs without first discussing your proposal with the team.
+
+## Development
+
+### Prerequisites
+
+- [Rust](https://rustup.rs/) (latest stable)
+- [Node.js](https://nodejs.org/) (>=18)
+- [pnpm](https://pnpm.io/) (>=8)
+
+Additional development tools:
+```bash
+cargo install cargo-watch
+cargo install sqlx-cli
+```
+
+Install dependencies:
+```bash
+pnpm i
+```
+
+### Running the dev server
 
 ```bash
-# Enhanced 이미지 사용
-docker-compose -f docker-compose-enhanced.yml up -d
-
-# 또는 기본 설정 사용
-docker-compose up -d
+pnpm run dev
 ```
 
-### 5. 접속 확인
+This will start the frontend and backend with live reloading. A blank DB will be copied from the `dev_assets_seed` folder.
 
-웹 브라우저에서 접속:
-- URL: http://[SERVER_IP]:8100
+### Build from source
 
-## CI/CD 자동 빌드
+1. Run `build-npm-package.sh`
+2. In the `npx-cli` folder run `npm pack`
+3. You can run your build with `npx [GENERATED FILE].tgz`
 
-이 프로젝트는 GitHub Actions를 통한 자동 빌드를 지원합니다:
 
-### 트리거 조건
-- `main` 또는 `master` 브랜치에 push
-- `vibe-kanban/` 폴더의 파일 변경사항이 있을 때
-- 수동 실행 (workflow_dispatch)
+### Environment Variables
 
-### 빌드 결과물
-1. **GitHub Container Registry**: `ghcr.io/[owner]/vibe-kanban-enhanced:latest`
-2. **GitHub Artifacts**: 압축된 이미지 파일 다운로드 가능 (30일 보관)
+The following environment variables can be configured at build time or runtime:
 
-### 빌드 스크립트 사용법
-```bash
-# 기본 빌드
-./build-and-transfer.sh
+| Variable | Type | Default | Description |
+|----------|------|---------|-------------|
+| `GITHUB_CLIENT_ID` | Build-time | `Ov23li9bxz3kKfPOIsGm` | GitHub OAuth app client ID for authentication |
+| `POSTHOG_API_KEY` | Build-time | Empty | PostHog analytics API key (disables analytics if empty) |
+| `POSTHOG_API_ENDPOINT` | Build-time | Empty | PostHog analytics endpoint (disables analytics if empty) |
+| `BACKEND_PORT` | Runtime | `0` (auto-assign) | Backend server port |
+| `FRONTEND_PORT` | Runtime | `3000` | Frontend development server port |
+| `HOST` | Runtime | `127.0.0.1` | Backend server host |
+| `DISABLE_WORKTREE_ORPHAN_CLEANUP` | Runtime | Not set | Disable git worktree cleanup (for debugging) |
 
-# 빌드만 수행 (저장 및 전송 생략)
-BUILD_ONLY=true ./build-and-transfer.sh
+**Build-time variables** must be set when running `pnpm run build`. **Runtime variables** are read when the application starts.
 
-# NAS로 자동 전송
-NAS_USER=user NAS_HOST=192.168.1.100 NAS_PATH=/path/to/destination ./build-and-transfer.sh
+#### Custom GitHub OAuth App (Optional)
 
-# 레지스트리에 push
-PUSH_TO_REGISTRY=true REGISTRY=ghcr.io/owner ./build-and-transfer.sh
-```
+By default, Vibe Kanban uses Bloop AI's GitHub OAuth app for authentication. To use your own GitHub app for self-hosting or custom branding:
 
-## 디렉토리 구조
-
-```
-vibe-kanban/
-├── .github/
-│   └── workflows/
-│       └── build-vibe-kanban.yml  # GitHub Actions 워크플로우
-├── docker-compose.yml             # 기본 Docker Compose 설정
-├── docker-compose-enhanced.yml    # Enhanced 이미지용 설정
-├── Dockerfile                     # Enhanced 이미지 빌드용
-├── build-and-transfer.sh          # 빌드 및 전송 스크립트
-├── .env                          # 환경 변수 (생성 필요)
-├── .env.example                  # 환경 변수 예제
-├── data/                         # 데이터베이스 저장
-├── repos/                        # Git 저장소
-├── config/                       # 설정 파일
-└── README.md                     # 이 문서
-```
-
-## 환경 변수 설정
-
-### GitHub OAuth (선택사항)
-
-AI 에이전트가 GitHub와 연동하려면 OAuth 앱 생성이 필요합니다:
-
-1. [GitHub Settings > Developer settings > OAuth Apps](https://github.com/settings/developers) 접속
-2. "New OAuth App" 클릭
-3. 다음 정보 입력:
-   - Application name: Vibe Kanban
-   - Homepage URL: http://[NAS_IP]:3000
-   - Authorization callback URL: http://[NAS_IP]:3000/api/auth/github/callback
-4. 생성된 Client ID와 Client Secret을 .env 파일에 입력
-
-### PostHog Analytics (선택사항)
-
-사용 분석을 위해 PostHog 설정 가능:
-- POSTHOG_API_KEY: PostHog API 키
-- POSTHOG_HOST: PostHog 호스트 URL
-
-## 관리 명령어
-
-```bash
-# 컨테이너 상태 확인
-docker-compose ps
-
-# 로그 확인
-docker-compose logs -f
-
-# 컨테이너 중지
-docker-compose stop
-
-# 컨테이너 재시작
-docker-compose restart
-
-# 컨테이너 제거 (데이터는 유지됨)
-docker-compose down
-
-# 컨테이너 및 데이터 완전 제거
-docker-compose down -v
-rm -rf data/ repos/ config/
-```
-
-## 업데이트
-
-최신 버전으로 업데이트:
-
-```bash
-docker-compose pull
-docker-compose up -d
-```
-
-## 문제 해결
-
-### 포트 충돌
-
-기본 포트 3000이 사용 중인 경우 docker-compose.yml에서 포트 변경:
-
-```yaml
-ports:
-  - "8080:3000"  # 8080으로 변경
-```
-
-### 권한 문제
-
-데이터 디렉토리 권한 문제 발생 시:
-
-```bash
-chmod -R 755 data/ repos/ config/
-```
-
-### 컨테이너 재빌드
-
-소스에서 빌드하려면 docker-compose.yml의 주석 처리된 부분 사용:
-
-```bash
-# image 섹션을 주석 처리하고
-# vibe-kanban-build 섹션의 주석 해제 후
-docker-compose up -d --build
-```
-
-## 추가 정보
-
-- 공식 저장소: https://github.com/BloopAI/vibe-kanban
-- 공식 웹사이트: https://www.vibekanban.com/
-- 라이선스: MIT
+1. Create a GitHub OAuth App at [GitHub Developer Settings](https://github.com/settings/developers)
+2. Enable "Device Flow" in the app settings
+3. Set scopes to include `user:email,repo`
+4. Build with your client ID:
+   ```bash
+   GITHUB_CLIENT_ID=your_client_id_here pnpm run build
+   ```
