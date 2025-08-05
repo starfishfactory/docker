@@ -1,6 +1,16 @@
 # Multi-stage build for vibe-kanban
 FROM --platform=$BUILDPLATFORM rust:1.75 as rust-builder
 
+# Install build dependencies
+RUN apt-get update && \
+    apt-get install -y \
+    build-essential \
+    pkg-config \
+    libssl-dev \
+    git && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 # Install Node.js and pnpm for frontend
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs && \
@@ -13,8 +23,15 @@ RUN git clone https://github.com/BloopAI/vibe-kanban.git .
 # Install Rust dependencies
 RUN cargo install cargo-watch sqlx-cli
 
-# Install Node dependencies
+# Install root dependencies
 RUN pnpm install
+
+# Install frontend dependencies
+WORKDIR /app/frontend
+RUN npm install
+
+# Go back to root
+WORKDIR /app
 
 # Make build script executable and build the application
 RUN chmod +x ./build-npm-package.sh && \
