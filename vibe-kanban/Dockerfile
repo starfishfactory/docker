@@ -1,5 +1,5 @@
 # Enhanced vibe-kanban image with additional tools
-FROM node:18
+FROM --platform=linux/amd64 node:18
 
 # Install additional utilities first
 RUN apt-get update && \
