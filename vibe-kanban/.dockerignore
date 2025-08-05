@@ -1,0 +1,55 @@
+# Git
+.git
+.gitignore
+.github
+
+# Development files
+.env
+.env.local
+.env.*.local
+docker-compose.yml
+Dockerfile
+.dockerignore
+
+# Build artifacts
+target/
+dist/
+build/
+*.log
+
+# Node modules (will be installed fresh)
+node_modules/
+.pnpm-store/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test and docs
+*.md
+LICENSE
+docs/
+tests/
+examples/
+
+# Local data
+data/
+config/
+*.db
+*.sqlite
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+
+# Build outputs that shouldn't be in build context
+frontend/dist/
+backend/target/
+npx-cli/dist/

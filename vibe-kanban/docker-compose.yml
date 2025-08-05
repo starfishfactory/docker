@@ -4,6 +4,7 @@ services:
   # Enhanced vibe-kanban with additional tools
   vibe-kanban:
     build: .
+    image: vibe-kanban:v1.0
     platform: linux/amd64
     container_name: vibe-kanban
     ports:
