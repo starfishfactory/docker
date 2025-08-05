@@ -82,10 +82,3 @@ backend/db.sqlite
 dev_assets
 /frontend/.env.sentry-build-plugin
 .ssh
-
-# Docker specific
-data/
-repos/
-config/
-*.tar.gz
-*.tar
