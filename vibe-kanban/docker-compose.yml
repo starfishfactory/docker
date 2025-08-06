@@ -20,6 +20,7 @@ services:
       - ./data:/app/data
       - ./config:/app/config
       - /var/services/homes/yoojinhyung/workspace:/repos
+    user: "1000:1000"  # Use your host user ID to avoid permission issues
     restart: unless-stopped
     stdin_open: true
     tty: true
