@@ -3,15 +3,18 @@ version: '3.8'
 services:
   # Enhanced vibe-kanban with additional tools
   vibe-kanban:
-    build: .
+    build:
+      context: .
+      args:
+        - APP_PORT=${APP_PORT:-3001}
     image: vibe-kanban:v1.0
     platform: linux/amd64
     container_name: vibe-kanban
     ports:
-      - "8100:3001"
+      - "${EXTERNAL_PORT:-8100}:${APP_PORT:-3001}"
     environment:
       - HOST=0.0.0.0
-      - PORT=3001
+      - PORT=${APP_PORT:-3001}
       # GitHub OAuth settings (optional)
       - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID:-}
       - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET:-}
@@ -26,7 +29,7 @@ services:
       - ./config:/app/config
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000"]
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:${APP_PORT:-3001}"]
       interval: 30s
       timeout: 10s
       retries: 3

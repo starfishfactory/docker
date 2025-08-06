@@ -1,6 +1,9 @@
 # Build stage
 FROM node:18-alpine AS builder
 
+# Accept APP_PORT as build argument
+ARG APP_PORT=3001
+
 # Install Rust and dependencies
 RUN apk add --no-cache curl build-base perl tini git openssh-client
 
@@ -51,6 +54,9 @@ RUN touch backend/src/main.rs && cargo build --release --manifest-path backend/C
 # Runtime stage
 FROM alpine:latest
 
+# Accept APP_PORT as build argument (needed for multi-stage)
+ARG APP_PORT=3001
+
 # Install runtime dependencies only
 RUN apk add --no-cache tini git openssh-client ca-certificates
 
@@ -58,10 +64,12 @@ RUN apk add --no-cache tini git openssh-client ca-certificates
 COPY --from=builder /app/target/release/vibe-kanban /usr/local/bin/vibe-kanban
 COPY --from=builder /app/frontend/dist /app/frontend/dist
 
-# Expose port
+# Set environment variables using ARG
 ENV HOST=0.0.0.0
-ENV PORT=3001
-EXPOSE 3001
+ENV PORT=${APP_PORT}
+
+# Expose port
+EXPOSE ${APP_PORT}
 
 # Run the application
 WORKDIR /repos
