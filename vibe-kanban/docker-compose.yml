@@ -24,7 +24,7 @@ services:
     stdin_open: true
     tty: true
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:${APP_PORT:-3000}/health"]
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:${APP_PORT:-3000}"]
       interval: 30s
       timeout: 10s
       retries: 3
