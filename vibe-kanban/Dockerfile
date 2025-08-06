@@ -8,6 +8,7 @@ WORKDIR /repos
 
 # Set environment for npm packages
 ENV NPM_CONFIG_CACHE=/tmp/.npm
+ENV NPM_CONFIG_YES=true
 
-# Run npx vibe-kanban by default
-CMD ["npx", "vibe-kanban@latest"]
+# Run npx with --yes flag to auto-install without prompts
+CMD ["npx", "--yes", "vibe-kanban@latest"]
