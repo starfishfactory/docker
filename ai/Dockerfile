@@ -3,7 +3,7 @@ FROM node:latest
 # 기본 유틸리티 설치 (vibe-kanban 지원 포함)
 RUN apt-get update && \
     apt-get install -y screen curl gnupg lsb-release ca-certificates \
-    git openssh-client wget unzip libnotify-bin dbus
+    git openssh-client wget unzip libnotify-bin dbus nano vim
 
 # GitHub CLI GPG 키 등록 (최신 주소)
 RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
