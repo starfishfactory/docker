@@ -23,12 +23,18 @@ RUN chown -R vibe:vibe /repos
 # Switch to non-root user
 USER vibe
 
-# Install Claude Code CLI globally
-RUN npm install -g @anthropic-ai/claude-code --dangerously-skip-permissions
+# Configure npm to use user's home directory for global packages
+RUN mkdir -p ~/.npm-global && \
+    npm config set prefix '~/.npm-global' && \
+    echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc
 
 # Set environment for npm packages
 ENV NPM_CONFIG_CACHE=/tmp/.npm
 ENV NPM_CONFIG_YES=true
+ENV PATH="/home/vibe/.npm-global/bin:${PATH}"
+
+# Install Claude Code CLI in user space
+RUN npm install -g @anthropic-ai/claude-code
 
 # Run npx with --yes flag to auto-install without prompts
 CMD ["npx", "--yes", "vibe-kanban@latest"]
