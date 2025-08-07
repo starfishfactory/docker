@@ -26,7 +26,8 @@ RUN mkdir -p /tmp/.npm /repos && \
 RUN npm install -g @anthropic-ai/claude-code
 
 # Create directories with proper ownership for vibe user
-RUN mkdir -p /home/vibe/.npm-global \
+RUN mkdir -p /home/vibe/.npm-global/lib \
+             /home/vibe/.npm-global/bin \
              /home/vibe/.local/share/vibe-kanban \
              /home/vibe/.cache/npm && \
     chown -R vibe:vibe /home/vibe
@@ -37,7 +38,8 @@ USER vibe
 # Configure npm to use user's home directory for global packages
 RUN npm config set prefix '/home/vibe/.npm-global' && \
     npm config set cache '/home/vibe/.cache/npm' && \
-    echo 'export PATH=/home/vibe/.npm-global/bin:$PATH' >> ~/.bashrc
+    echo 'export PATH=/home/vibe/.npm-global/bin:$PATH' >> ~/.bashrc && \
+    mkdir -p /home/vibe/.npm-global/lib/node_modules
 
 # Set environment for npm packages
 ENV NPM_CONFIG_CACHE=/home/vibe/.cache/npm
