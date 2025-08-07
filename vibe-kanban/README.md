@@ -48,7 +48,7 @@ Edit `.env` file to customize:
 
 ### Volume Mounts
 
-- `./data:/home/vibe/.local/share/vibe-kanban`: Application data, SQLite database, and configuration
+- `./data:/root/.local/share/vibe-kanban`: Application data, SQLite database, and configuration
 - `/var/services/homes/yoojinhyung/workspace:/repos`: Your project workspace (mounted at /repos)
 
 ## 🛠️ Common Commands
