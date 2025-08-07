@@ -18,7 +18,18 @@ cp .env.example .env
 # Edit .env and add your API keys
 ```
 
-### 2. Build and Run
+### 2. Setup Permissions (Important for NAS)
+
+```bash
+# Create data directory with proper permissions
+mkdir -p data
+chmod 755 data
+
+# If permission issues occur, run:
+sudo chown -R $USER:$USER data
+```
+
+### 3. Build and Run
 
 ```bash
 # Build the image
@@ -31,7 +42,7 @@ docker compose up -d
 docker compose exec ai-app bash
 ```
 
-### 3. Use AI Tools
+### 4. Use AI Tools
 
 Inside the container:
 ```bash
@@ -69,12 +80,28 @@ These variables are pre-configured with defaults for future vibe-kanban integrat
 - **Repos**: `/var/services/homes/yoojinhyung/workspace:/repos` - For vibe-kanban repositories
 - **Data**: `./data:/root/.local/share/vibe-kanban` - vibe-kanban data persistence
 
+## Troubleshooting
+
+### Permission Issues
+If you encounter permission errors with the data folder:
+```bash
+# On NAS/Linux
+sudo chown -R 1000:1000 data
+
+# Or set current user
+sudo chown -R $USER:$USER data
+```
+
 ## Stop and Clean
 
 ```bash
 # Stop the container
 docker compose down
 
-# Remove with volumes
+# Remove with volumes (keeps data folder)
 docker compose down -v
+
+# Complete cleanup (including data)
+docker compose down -v
+rm -rf data/*
 ```
