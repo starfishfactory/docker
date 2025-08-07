@@ -3,17 +3,14 @@
 # Start vibe-kanban with configured environment variables
 echo "Starting vibe-kanban..."
 echo "================================"
-echo "Main Port: ${PORT:-3000}"
-echo "Frontend: http://localhost:${FRONTEND_PORT:-3000}"
-echo "Backend:  Port ${BACKEND_PORT:-3001}"
-echo "Host:     ${HOST:-0.0.0.0}"
+echo "Port: ${PORT:-3000}"
+echo "Host: ${HOST:-0.0.0.0}"
+echo "URL:  http://localhost:${PORT:-3000}"
 echo "================================"
 
 # Run vibe-kanban with environment variables (already installed globally)
 PORT=${PORT:-3000} \
 HOST=${HOST:-0.0.0.0} \
-BACKEND_PORT=${BACKEND_PORT:-3001} \
-FRONTEND_PORT=${FRONTEND_PORT:-3000} \
 GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID:-Ov23li9bxz3kKfPOIsGm} \
 POSTHOG_API_KEY=${POSTHOG_API_KEY} \
 POSTHOG_API_ENDPOINT=${POSTHOG_API_ENDPOINT} \

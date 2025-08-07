@@ -8,7 +8,7 @@ Simple Docker environment for AI CLI tools (Claude Code & Gemini CLI).
 - **Gemini CLI**: Google's AI CLI tool
 - **GitHub CLI**: GitHub operations from terminal
 - **vibe-kanban**: Pre-installed globally with configured environment
-  - Port configuration: Frontend on 3000, Backend on 3001
+  - Port configuration: 3000
   - Helper script: `start-vibe.sh` for easy launching
   - Data persistence in `./data` folder
 
@@ -67,8 +67,8 @@ start-vibe.sh
 # vibe-kanban is pre-installed globally
 vibe-kanban
 
-# Run vibe-kanban (Option 3: With custom ports)
-FRONTEND_PORT=3000 BACKEND_PORT=3001 HOST=0.0.0.0 vibe-kanban
+# Run vibe-kanban (Option 3: With custom port)
+PORT=3000 HOST=0.0.0.0 vibe-kanban
 ```
 
 ## Environment Variables
@@ -81,9 +81,8 @@ FRONTEND_PORT=3000 BACKEND_PORT=3001 HOST=0.0.0.0 vibe-kanban
 ### Optional (for vibe-kanban)
 These variables are pre-configured for vibe-kanban:
 - `GITHUB_CLIENT_ID`: OAuth app ID (default: Bloop AI's app)
+- `PORT`: Application port (default: 3000)
 - `HOST`: Server bind address (default: 0.0.0.0)
-- `BACKEND_PORT`: Backend port (default: 3001)
-- `FRONTEND_PORT`: Frontend port (default: 3000)
 - `POSTHOG_API_KEY`: Analytics key (optional)
 
 ## Volume Mounts

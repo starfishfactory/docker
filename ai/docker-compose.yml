@@ -21,8 +21,6 @@ services:
       - POSTHOG_API_ENDPOINT=${POSTHOG_API_ENDPOINT:-}
       - PORT=${PORT:-3000}
       - HOST=${HOST:-0.0.0.0}
-      - BACKEND_PORT=${BACKEND_PORT:-3001}
-      - FRONTEND_PORT=${FRONTEND_PORT:-3000}
       - DISABLE_WORKTREE_ORPHAN_CLEANUP=${DISABLE_WORKTREE_ORPHAN_CLEANUP:-}
     volumes:
       # Main workspace (for AI tools)
