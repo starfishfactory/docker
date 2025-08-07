@@ -17,12 +17,12 @@ RUN useradd -m -s /bin/bash vibe && \
 # Set working directory to /repos (matching official Dockerfile)
 WORKDIR /repos
 
-# Create npm cache directory and change ownership
-RUN mkdir -p /tmp/.npm && \
-    chown -R vibe:vibe /repos /tmp/.npm
+# Create npm cache directory and repos directory with proper ownership
+RUN mkdir -p /tmp/.npm /repos && \
+    chown -R vibe:vibe /tmp/.npm && \
+    chmod 755 /repos
 
-# Switch to non-root user
-USER vibe
+# Don't switch user yet - stay as root for now
 
 # Configure npm to use user's home directory for global packages
 # Also create vibe-kanban data directory
@@ -36,8 +36,11 @@ ENV NPM_CONFIG_YES=true
 ENV PATH="/home/vibe/.npm-global/bin:${PATH}"
 ENV HOME=/home/vibe
 
-# Install Claude Code CLI in user space
+# Install Claude Code CLI globally as root
 RUN npm install -g @anthropic-ai/claude-code
+
+# Now switch to non-root user for runtime
+USER vibe
 
 # Run npx with --yes flag to auto-install without prompts
 CMD ["npx", "--yes", "vibe-kanban@latest"]

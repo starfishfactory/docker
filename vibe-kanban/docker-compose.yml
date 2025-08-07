@@ -15,9 +15,10 @@ services:
       - BACKEND_PORT=3001
       - FRONTEND_PORT=3001
       - HOME=/home/vibe
+    user: "1026:100"  # yoojinhyung user and users group
     volumes:
       - ./data:/home/vibe/.local/share/vibe-kanban
-      - /var/services/homes/yoojinhyung/workspace:/repos
+      - /var/services/homes/yoojinhyung/workspace:/repos:rw
     restart: unless-stopped
     stdin_open: true
     tty: true
