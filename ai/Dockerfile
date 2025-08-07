@@ -1,8 +1,9 @@
 FROM node:latest
 
-# 기본 유틸리티 설치
+# 기본 유틸리티 설치 (vibe-kanban 지원 포함)
 RUN apt-get update && \
-    apt-get install -y screen curl gnupg lsb-release ca-certificates
+    apt-get install -y screen curl gnupg lsb-release ca-certificates \
+    git openssh-client wget unzip libnotify-bin dbus
 
 # GitHub CLI GPG 키 등록 (최신 주소)
 RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
@@ -21,6 +22,13 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # 글로벌 NPM 패키지 설치
 RUN npm install -g @anthropic-ai/claude-code
 RUN npm install -g @google/gemini-cli
+
+# NPM 캐시 설정 (vibe-kanban용)
+ENV NPM_CONFIG_CACHE=/tmp/npm-cache
+ENV NPM_CONFIG_YES=true
+
+# 필요한 디렉토리 생성
+RUN mkdir -p /repos /root/.local/share/vibe-kanban
 
 # 작업 디렉토리 지정
 WORKDIR /workspace

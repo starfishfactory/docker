@@ -6,6 +6,9 @@ services:
     command: bash
     stdin_open: true
     tty: true
+    ports:
+      # Optional: for vibe-kanban web interface (if running)
+      - "${FRONTEND_PORT:-3000}:3000"
     environment:
       # AI Tool API Keys
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
@@ -21,4 +24,11 @@ services:
       - FRONTEND_PORT=${FRONTEND_PORT:-3000}
       - DISABLE_WORKTREE_ORPHAN_CLEANUP=${DISABLE_WORKTREE_ORPHAN_CLEANUP:-}
     volumes:
+      # Main workspace (for AI tools)
       - /var/services/homes/yoojinhyung/workspace:/workspace
+      
+      # vibe-kanban repository directory
+      - /var/services/homes/yoojinhyung/workspace:/repos:rw
+      
+      # vibe-kanban data persistence
+      - ./data:/root/.local/share/vibe-kanban
