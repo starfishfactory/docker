@@ -55,5 +55,11 @@ WORKDIR /workspace
 # Set environment for vibe user
 ENV HOME=/home/vibe
 
+# Set default environment variables for vibe-kanban
+ENV PORT=3001
+ENV HOST=0.0.0.0
+ENV BACKEND_PORT=3001
+ENV FRONTEND_PORT=3001
+
 # Default command
 CMD ["/usr/local/bin/start.sh"]

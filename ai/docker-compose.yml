@@ -5,7 +5,7 @@ services:
     build: .
     container_name: ai-dev-env
     ports:
-      - "${EXTERNAL_PORT:-8100}:${APP_PORT:-3000}"  # vibe-kanban web interface
+      - "${EXTERNAL_PORT:-8100}:${PORT:-3001}"  # vibe-kanban web interface
     volumes:
       # Main workspace
       - ./workspace:/workspace
@@ -41,9 +41,10 @@ services:
       - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET:-}
       
       # Port configuration
-      - APP_PORT=${APP_PORT:-3000}
+      - PORT=${PORT:-3001}
+      - APP_PORT=${APP_PORT:-3001}
       - BACKEND_PORT=${BACKEND_PORT:-3001}
-      - FRONTEND_PORT=${FRONTEND_PORT:-3000}
+      - FRONTEND_PORT=${FRONTEND_PORT:-3001}
       
       # Host configuration
       - HOST=${HOST:-0.0.0.0}
@@ -53,6 +54,10 @@ services:
       
       # Display for GUI apps (if needed)
       - DISPLAY=${DISPLAY:-:0}
+      
+      # PostHog Analytics (optional)
+      - POSTHOG_API_KEY=${POSTHOG_API_KEY:-}
+      - POSTHOG_API_ENDPOINT=${POSTHOG_API_ENDPOINT:-}
       
     stdin_open: true
     tty: true
