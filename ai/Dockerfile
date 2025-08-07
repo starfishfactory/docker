@@ -33,5 +33,9 @@ RUN mkdir -p /repos /root/.local/share/vibe-kanban
 # 작업 디렉토리 지정
 WORKDIR /workspace
 
+# Copy vibe-kanban start script
+COPY start-vibe.sh /usr/local/bin/start-vibe.sh
+RUN chmod +x /usr/local/bin/start-vibe.sh
+
 # 기본 쉘
 CMD ["bash"]
