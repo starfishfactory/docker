@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  ai-dev:
+    build: .
+    container_name: ai-dev-env
+    ports:
+      - "3000:3000"  # vibe-kanban web interface
+    volumes:
+      # Main workspace
+      - ./workspace:/workspace
+      
+      # Repository storage for vibe-kanban
+      - ./repos:/repos
+      
+      # Persistent data for vibe-kanban
+      - ./data:/home/vibe/.local/share/vibe-kanban
+      
+      # SSH keys (if needed for git operations)
+      - ~/.ssh:/home/vibe/.ssh:ro
+      - ~/.ssh:/root/.ssh:ro
+      
+      # Git config
+      - ~/.gitconfig:/home/vibe/.gitconfig:ro
+      - ~/.gitconfig:/root/.gitconfig:ro
+    
+    environment:
+      # Claude Code configuration
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      
+      # Gemini CLI configuration  
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      
+      # GitHub CLI configuration
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      
+      # Node environment
+      - NODE_ENV=development
+      
+      # Display for GUI apps (if needed)
+      - DISPLAY=${DISPLAY:-:0}
+      
+    stdin_open: true
+    tty: true
+    
+    networks:
+      - ai-network
+
+networks:
+  ai-network:
+    driver: bridge
