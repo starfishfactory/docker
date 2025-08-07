@@ -5,7 +5,7 @@ services:
     build: .
     container_name: ai-dev-env
     ports:
-      - "8100:3000"  # vibe-kanban web interface
+      - "${EXTERNAL_PORT:-8100}:${APP_PORT:-3000}"  # vibe-kanban web interface
     volumes:
       # Main workspace
       - ./workspace:/workspace
@@ -34,8 +34,20 @@ services:
       # GitHub CLI configuration
       - GITHUB_TOKEN=${GITHUB_TOKEN}
       
+      # GitHub OAuth for vibe-kanban (optional)
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID:-Ov23li9bxz3kKfPOIsGm}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET:-}
+      
+      # Port configuration
+      - APP_PORT=${APP_PORT:-3000}
+      - BACKEND_PORT=${BACKEND_PORT:-3001}
+      - FRONTEND_PORT=${FRONTEND_PORT:-3000}
+      
+      # Host configuration
+      - HOST=${HOST:-0.0.0.0}
+      
       # Node environment
-      - NODE_ENV=development
+      - NODE_ENV=${NODE_ENV:-development}
       
       # Display for GUI apps (if needed)
       - DISPLAY=${DISPLAY:-:0}
