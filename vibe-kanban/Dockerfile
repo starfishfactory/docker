@@ -17,8 +17,9 @@ RUN useradd -m -s /bin/bash vibe && \
 # Set working directory to /repos (matching official Dockerfile)
 WORKDIR /repos
 
-# Change ownership of working directory
-RUN chown -R vibe:vibe /repos
+# Create npm cache directory and change ownership
+RUN mkdir -p /tmp/.npm && \
+    chown -R vibe:vibe /repos /tmp/.npm
 
 # Switch to non-root user
 USER vibe
@@ -29,7 +30,7 @@ RUN mkdir -p ~/.npm-global && \
     echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc
 
 # Set environment for npm packages
-ENV NPM_CONFIG_CACHE=/tmp/.npm
+ENV NPM_CONFIG_CACHE=/home/vibe/.npm-cache
 ENV NPM_CONFIG_YES=true
 ENV PATH="/home/vibe/.npm-global/bin:${PATH}"
 
