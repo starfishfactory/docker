@@ -5,7 +5,7 @@ services:
     build: .
     container_name: ai-dev-env
     ports:
-      - "3000:3000"  # vibe-kanban web interface
+      - "8100:3000"  # vibe-kanban web interface
     volumes:
       # Main workspace
       - ./workspace:/workspace

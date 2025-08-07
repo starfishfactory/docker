@@ -37,7 +37,7 @@ docker compose exec ai-dev bash
 
 ### 3. 서비스 접근
 
-- **vibe-kanban**: http://localhost:3000
+- **vibe-kanban**: http://localhost:8100
 - **터미널**: `docker compose exec ai-dev bash`
 
 ## 사용 방법
@@ -63,7 +63,7 @@ gh [명령어]
 
 ### vibe-kanban 접근
 
-브라우저에서 http://localhost:3000 접속
+브라우저에서 http://localhost:8100 접속
 
 ### Screen 세션 관리
 
