@@ -1,0 +1,33 @@
+version: "3"
+services:
+  ai-app:
+    build: .
+    container_name: my-ai
+    command: bash
+    stdin_open: true
+    tty: true
+    ports:
+      # Optional: for vibe-kanban web interface (if running)
+      - "${EXTERNAL_PORT:-8100}:${PORT:-3000}"
+    environment:
+      # AI Tool API Keys
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      
+      # Optional: vibe-kanban Configuration (with defaults)
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID:-Ov23li9bxz3kKfPOIsGm}
+      - POSTHOG_API_KEY=${POSTHOG_API_KEY:-}
+      - POSTHOG_API_ENDPOINT=${POSTHOG_API_ENDPOINT:-}
+      - PORT=${PORT:-3000}
+      - HOST=${HOST:-0.0.0.0}
+      - DISABLE_WORKTREE_ORPHAN_CLEANUP=${DISABLE_WORKTREE_ORPHAN_CLEANUP:-}
+    volumes:
+      # Main workspace (for AI tools)
+      - /var/services/homes/yoojinhyung/workspace:/workspace
+      
+      # vibe-kanban repository directory
+      - /var/services/homes/yoojinhyung/workspace:/repos:rw
+      
+      # vibe-kanban data persistence (사용자별 경로로 변경)
+      - ./data:/home/yoojinhyung/.local/share/vibe-kanban
