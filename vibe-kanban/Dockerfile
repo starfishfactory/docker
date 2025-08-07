@@ -7,6 +7,8 @@ RUN apt-get update && apt-get install -y \
     wget \
     unzip \
     curl \
+    libnotify-bin \
+    dbus \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory to /repos (matching official Dockerfile)

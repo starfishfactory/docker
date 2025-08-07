@@ -14,6 +14,7 @@ services:
       - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET:-}
       - BACKEND_PORT=3001
       - FRONTEND_PORT=3001
+      - DISPLAY=:0  # For GUI notifications (optional)
     volumes:
       - ./data:/root/.local/share/vibe-kanban
       - /var/services/homes/yoojinhyung/workspace:/repos:rw
