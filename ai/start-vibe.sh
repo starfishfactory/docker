@@ -3,12 +3,14 @@
 # Start vibe-kanban with configured environment variables
 echo "Starting vibe-kanban..."
 echo "================================"
+echo "Main Port: ${PORT:-3000}"
 echo "Frontend: http://localhost:${FRONTEND_PORT:-3000}"
 echo "Backend:  Port ${BACKEND_PORT:-3001}"
 echo "Host:     ${HOST:-0.0.0.0}"
 echo "================================"
 
 # Run vibe-kanban with environment variables (already installed globally)
+PORT=${PORT:-3000} \
 HOST=${HOST:-0.0.0.0} \
 BACKEND_PORT=${BACKEND_PORT:-3001} \
 FRONTEND_PORT=${FRONTEND_PORT:-3000} \
