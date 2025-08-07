@@ -22,25 +22,28 @@ RUN mkdir -p /tmp/.npm /repos && \
     chown -R vibe:vibe /tmp/.npm && \
     chmod 755 /repos
 
-# Don't switch user yet - stay as root for now
-
-# Configure npm to use user's home directory for global packages
-# Also create vibe-kanban data directory
-RUN mkdir -p ~/.npm-global ~/.local/share/vibe-kanban && \
-    npm config set prefix '~/.npm-global' && \
-    echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc
-
-# Set environment for npm packages
-ENV NPM_CONFIG_CACHE=/home/vibe/.npm-cache
-ENV NPM_CONFIG_YES=true
-ENV PATH="/home/vibe/.npm-global/bin:${PATH}"
-ENV HOME=/home/vibe
-
 # Install Claude Code CLI globally as root
 RUN npm install -g @anthropic-ai/claude-code
 
+# Create directories with proper ownership for vibe user
+RUN mkdir -p /home/vibe/.npm-global \
+             /home/vibe/.local/share/vibe-kanban \
+             /home/vibe/.cache/npm && \
+    chown -R vibe:vibe /home/vibe
+
 # Now switch to non-root user for runtime
 USER vibe
+
+# Configure npm to use user's home directory for global packages
+RUN npm config set prefix '/home/vibe/.npm-global' && \
+    npm config set cache '/home/vibe/.cache/npm' && \
+    echo 'export PATH=/home/vibe/.npm-global/bin:$PATH' >> ~/.bashrc
+
+# Set environment for npm packages
+ENV NPM_CONFIG_CACHE=/home/vibe/.cache/npm
+ENV NPM_CONFIG_YES=true
+ENV PATH="/home/vibe/.npm-global/bin:${PATH}"
+ENV HOME=/home/vibe
 
 # Run npx with --yes flag to auto-install without prompts
 CMD ["npx", "--yes", "vibe-kanban@latest"]
