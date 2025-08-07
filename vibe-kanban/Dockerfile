@@ -1,37 +1,26 @@
-FROM node:18-alpine
+FROM node:18-slim
 
-# Install Rust and dependencies
-RUN apk add --no-cache curl build-base perl tini git openssh-client
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-ENV PATH="/root/.cargo/bin:${PATH}"
+# Install required tools
+RUN apt-get update && apt-get install -y \
+    git \
+    openssh-client \
+    wget \
+    unzip \
+    curl \
+    libnotify-bin \
+    dbus \
+    && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
-WORKDIR /app
-
-# Copy package files first for dependency caching
-COPY package*.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY frontend/package*.json ./frontend/
-COPY npx-cli/package*.json ./npx-cli/
-
-# Install pnpm and dependencies (cached if package files unchanged)
-RUN npm install -g pnpm
-RUN pnpm install
-
-COPY frontend/ ./frontend/
-COPY shared/ ./shared/
-RUN cd frontend && npm run build
-
-# Copy Rust dependencies for cargo cache
-COPY backend/ ./backend/
-COPY Cargo.toml ./
-RUN cargo build --release --manifest-path backend/Cargo.toml
-
-# Expose port
-ENV HOST=0.0.0.0
-ENV PORT=3000
-EXPOSE 3000
-
-# Run the application
+# Set working directory to /repos (matching official Dockerfile)
 WORKDIR /repos
-ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["/app/target/release/vibe-kanban"]
+
+# Set npm cache to temporary directory to avoid permission issues
+ENV NPM_CONFIG_CACHE=/tmp/npm-cache
+ENV NPM_CONFIG_YES=true
+
+# Create necessary directories
+RUN mkdir -p /repos /root/.local/share/vibe-kanban
+
+# Run as root user (default)
+# Run npx with --yes flag to auto-install without prompts
+CMD ["npx", "--yes", "vibe-kanban@latest"]

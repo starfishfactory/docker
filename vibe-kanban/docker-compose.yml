@@ -1,32 +1,29 @@
 version: '3.8'
 
 services:
-  # Enhanced vibe-kanban with additional tools
   vibe-kanban:
     build: .
-    platform: linux/amd64
+    image: vibe-kanban-npx:latest
     container_name: vibe-kanban
     ports:
-      - "8100:3001"
+      - "${EXTERNAL_PORT:-8100}:3001"
     environment:
       - HOST=0.0.0.0
       - PORT=3001
-      # GitHub OAuth settings (optional)
-      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID:-}
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID:-Ov23li9bxz3kKfPOIsGm}
       - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET:-}
-      # PostHog analytics (optional)
-      - POSTHOG_API_KEY=${POSTHOG_API_KEY:-}
-      - POSTHOG_HOST=${POSTHOG_HOST:-https://app.posthog.com}
-      # Database path
-      - DATABASE_URL=sqlite:///app/data/vibe-kanban.db
+      - BACKEND_PORT=3001
+      - FRONTEND_PORT=3001
+      - DISPLAY=:0  # For GUI notifications (optional)
     volumes:
-      - ./data:/app/data
-      - /var/services/homes/yoojinhyung/workspace:/repos
-      - ./config:/app/config
+      - ./data:/root/.local/share/vibe-kanban
+      - /var/services/homes/yoojinhyung/workspace:/repos:rw
     restart: unless-stopped
+    stdin_open: true
+    tty: true
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000"]
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3001"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
+      start_period: 60s
