@@ -7,9 +7,10 @@ Simple Docker environment for AI CLI tools (Claude Code & Gemini CLI).
 - **Claude Code**: Anthropic's AI coding assistant
 - **Gemini CLI**: Google's AI CLI tool
 - **GitHub CLI**: GitHub operations from terminal
-- **vibe-kanban Ready**: Pre-configured mounts and environment for vibe-kanban integration
+- **vibe-kanban**: Pre-installed globally with configured environment
   - Port configuration: Frontend on 3000, Backend on 3001
   - Helper script: `start-vibe.sh` for easy launching
+  - Data persistence in `./data` folder
 
 ## Quick Start
 
@@ -59,13 +60,15 @@ gh [command]
 
 # Run vibe-kanban (Option 1: Using helper script)
 ./start-vibe.sh
+# or
+start-vibe.sh
 
 # Run vibe-kanban (Option 2: Direct command)
-# Environment variables are already configured in the container
-npx --yes vibe-kanban@latest
+# vibe-kanban is pre-installed globally
+vibe-kanban
 
 # Run vibe-kanban (Option 3: With custom ports)
-FRONTEND_PORT=3000 BACKEND_PORT=3001 HOST=0.0.0.0 npx --yes vibe-kanban@latest
+FRONTEND_PORT=3000 BACKEND_PORT=3001 HOST=0.0.0.0 vibe-kanban
 ```
 
 ## Environment Variables

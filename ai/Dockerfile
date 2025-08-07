@@ -22,9 +22,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # 글로벌 NPM 패키지 설치
 RUN npm install -g @anthropic-ai/claude-code
 RUN npm install -g @google/gemini-cli
-
-# vibe-kanban 사전 설치 (캐싱으로 첫 실행 속도 향상)
-RUN npx --yes vibe-kanban@latest --help || true
+RUN npm install -g vibe-kanban
 
 # NPM 캐시 설정 (vibe-kanban용)
 ENV NPM_CONFIG_CACHE=/tmp/npm-cache
