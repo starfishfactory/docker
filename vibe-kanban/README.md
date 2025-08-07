@@ -4,18 +4,23 @@ This Docker setup runs the official Vibe Kanban NPM package in a containerized e
 
 ## 🚀 Quick Start
 
-1. **Configure environment** (optional):
+1. **Initialize data directory**:
+   ```bash
+   ./init.sh
+   ```
+
+2. **Configure environment** (optional):
    ```bash
    cp .env.example .env
    # Edit .env to customize ports or GitHub OAuth settings
    ```
 
-2. **Start the container**:
+3. **Start the container**:
    ```bash
    docker-compose up -d
    ```
 
-3. **Access Vibe Kanban**:
+4. **Access Vibe Kanban**:
    - Open your browser at http://localhost:8100
    - The application will download and start automatically on first run
 
