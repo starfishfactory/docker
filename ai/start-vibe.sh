@@ -5,7 +5,7 @@ echo "Starting vibe-kanban..."
 echo "================================"
 echo "Port: ${PORT:-3000}"
 echo "Host: ${HOST:-0.0.0.0}"
-echo "URL:  http://localhost:${EXTERNAL_PORT:-8001}"
+echo "URL:  http://localhost:${EXTERNAL_PORT:-8100}"
 echo "================================"
 
 # Run vibe-kanban with environment variables (already installed globally)

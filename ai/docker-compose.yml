@@ -8,7 +8,7 @@ services:
     tty: true
     ports:
       # Optional: for vibe-kanban web interface (if running)
-      - "${EXTERNAL_PORT:-8001}:${PORT:-3000}"
+      - "${EXTERNAL_PORT:-8100}:${PORT:-3000}"
     environment:
       # AI Tool API Keys
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
