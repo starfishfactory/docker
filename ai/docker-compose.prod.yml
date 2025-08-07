@@ -15,16 +15,6 @@ services:
       
       # Persistent data for vibe-kanban
       - ./data:/home/vibe/.local/share/vibe-kanban
-      
-      # SSH keys (if needed for git operations) - optional mount
-      # Uncomment if you have SSH keys
-      # - ~/.ssh:/home/vibe/.ssh:ro
-      # - ~/.ssh:/root/.ssh:ro
-      
-      # Git config - optional mount
-      # Uncomment if you have gitconfig
-      # - ~/.gitconfig:/home/vibe/.gitconfig:ro
-      # - ~/.gitconfig:/root/.gitconfig:ro
     
     environment:
       # Claude Code configuration

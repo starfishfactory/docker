@@ -28,12 +28,17 @@ cp .env.example .env
 # 빌드
 docker compose build
 
-# 실행
+# 실행 (개발 환경 - SSH/Git 설정 포함)
 docker compose up -d
+
+# 또는 실행 (프로덕션 - SSH/Git 설정 제외)
+docker compose -f docker-compose.prod.yml up -d
 
 # 컨테이너 접속
 docker compose exec ai-dev bash
 ```
+
+**참고**: SSH 키나 Git 설정이 없는 경우 `docker-compose.prod.yml`을 사용하거나, `docker-compose.yml`의 해당 라인을 주석 해제하세요.
 
 ### 3. 서비스 접근
 
