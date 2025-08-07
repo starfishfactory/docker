@@ -25,7 +25,8 @@ RUN mkdir -p /tmp/.npm && \
 USER vibe
 
 # Configure npm to use user's home directory for global packages
-RUN mkdir -p ~/.npm-global && \
+# Also create vibe-kanban data directory
+RUN mkdir -p ~/.npm-global ~/.local/share/vibe-kanban && \
     npm config set prefix '~/.npm-global' && \
     echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc
 
@@ -33,6 +34,7 @@ RUN mkdir -p ~/.npm-global && \
 ENV NPM_CONFIG_CACHE=/home/vibe/.npm-cache
 ENV NPM_CONFIG_YES=true
 ENV PATH="/home/vibe/.npm-global/bin:${PATH}"
+ENV HOME=/home/vibe
 
 # Install Claude Code CLI in user space
 RUN npm install -g @anthropic-ai/claude-code
