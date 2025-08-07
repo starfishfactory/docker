@@ -1,65 +1,29 @@
-FROM node:18-slim
+FROM node:latest
 
-# Install required tools for both Claude Code and vibe-kanban
-RUN apt-get update && apt-get install -y \
-    git \
-    openssh-client \
-    wget \
-    unzip \
-    curl \
-    libnotify-bin \
-    dbus \
-    screen \
-    gnupg \
-    lsb-release \
-    ca-certificates \
-    procps \
-    && rm -rf /var/lib/apt/lists/*
+# 기본 유틸리티 설치
+RUN apt-get update && \
+    apt-get install -y screen curl gnupg lsb-release ca-certificates
 
-# GitHub CLI GPG key registration
+# GitHub CLI GPG 키 등록 (최신 주소)
 RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
     -o /usr/share/keyrings/githubcli-archive-keyring.gpg
 
-# GitHub CLI APT repository registration
+# GitHub CLI APT 저장소 등록
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] \
 https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null
 
-# Install GitHub CLI
-RUN apt-get update && apt-get install -y gh && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+# GitHub CLI 설치
+RUN apt-get update && apt-get install -y gh
 
-# Install global NPM packages
+# APT 캐시 정리
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# 글로벌 NPM 패키지 설치
 RUN npm install -g @anthropic-ai/claude-code
 RUN npm install -g @google/gemini-cli
 
-# Set npm config for vibe-kanban
-ENV NPM_CONFIG_CACHE=/tmp/npm-cache
-ENV NPM_CONFIG_YES=true
-
-# Create user 'vibe' for vibe-kanban (matching expected behavior)
-RUN useradd -m -s /bin/bash vibe
-
-# Create necessary directories
-RUN mkdir -p /repos /home/vibe/.local/share/vibe-kanban /workspace
-
-# Set proper permissions
-RUN chown -R vibe:vibe /repos /home/vibe/.local/share/vibe-kanban
-
-# Copy startup script
-COPY --chown=vibe:vibe start.sh /usr/local/bin/start.sh
-RUN chmod +x /usr/local/bin/start.sh
-
-# Set working directory
+# 작업 디렉토리 지정
 WORKDIR /workspace
 
-# Set environment for vibe user
-ENV HOME=/home/vibe
-
-# Set default environment variables for vibe-kanban
-ENV PORT=3001
-ENV HOST=0.0.0.0
-ENV BACKEND_PORT=3001
-ENV FRONTEND_PORT=3001
-
-# Default command
-CMD ["/usr/local/bin/start.sh"]
+# 기본 쉘
+CMD ["bash"]
