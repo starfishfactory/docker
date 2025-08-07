@@ -19,24 +19,34 @@ RUN apt-get update && apt-get install -y gh
 # APT 캐시 정리
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# 글로벌 NPM 패키지 설치
+# yoojinhyung 사용자 생성 (호스트와 동일한 UID/GID)
+RUN groupadd -g 100 users || true
+RUN useradd -u 1026 -g 100 -m -s /bin/bash yoojinhyung
+
+# 필요한 디렉토리 생성 및 권한 설정
+RUN mkdir -p /repos /home/yoojinhyung/.local/share/vibe-kanban /tmp/npm-cache
+RUN chown -R yoojinhyung:users /repos /home/yoojinhyung/.local /tmp/npm-cache
+
+# vibe-kanban 시작 스크립트 복사 및 권한 설정 (root로)
+COPY start-vibe.sh /usr/local/bin/start-vibe.sh
+RUN chmod +x /usr/local/bin/start-vibe.sh
+
+# 사용자 전환
+USER yoojinhyung
+
+# NPM 캐시 설정 (사용자 권한으로)
+ENV NPM_CONFIG_CACHE=/tmp/npm-cache
+ENV NPM_CONFIG_YES=true
+ENV NPM_CONFIG_PREFIX=/home/yoojinhyung/.npm-global
+ENV PATH=/home/yoojinhyung/.npm-global/bin:$PATH
+
+# 사용자 권한으로 NPM 패키지 설치
 RUN npm install -g @anthropic-ai/claude-code
 RUN npm install -g @google/gemini-cli
 RUN npm install -g vibe-kanban
 
-# NPM 캐시 설정 (vibe-kanban용)
-ENV NPM_CONFIG_CACHE=/tmp/npm-cache
-ENV NPM_CONFIG_YES=true
-
-# 필요한 디렉토리 생성
-RUN mkdir -p /repos /root/.local/share/vibe-kanban
-
 # 작업 디렉토리 지정
-WORKDIR /workspace
-
-# Copy vibe-kanban start script
-COPY start-vibe.sh /usr/local/bin/start-vibe.sh
-RUN chmod +x /usr/local/bin/start-vibe.sh
+WORKDIR /home/yoojinhyung
 
 # 기본 쉘
 CMD ["bash"]

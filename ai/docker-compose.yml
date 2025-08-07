@@ -29,5 +29,5 @@ services:
       # vibe-kanban repository directory
       - /var/services/homes/yoojinhyung/workspace:/repos:rw
       
-      # vibe-kanban data persistence
-      - ./data:/root/.local/share/vibe-kanban
+      # vibe-kanban data persistence (사용자별 경로로 변경)
+      - ./data:/home/yoojinhyung/.local/share/vibe-kanban
